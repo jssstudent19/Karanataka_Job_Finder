@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Recommendation Test - Karnataka Job Portal</title>
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(45deg, #2c3e50, #34495e);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .test-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .test-section h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .test-section h3::before {
+            content: "🧪";
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            width: 100%;
+        }
+        
+        .file-input-wrapper input[type=file] {
+            opacity: 0;
+            position: absolute;
+            z-index: -1;
+        }
+        
+        .file-input-label {
+            display: block;
+            padding: 12px 15px;
+            background: #f8f9fa;
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .file-input-wrapper:hover .file-input-label {
+            border-color: #667eea;
+            background: #e3f2fd;
+        }
+        
+        .btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(45deg, #6c757d, #495057);
+        }
+        
+        .btn-success {
+            background: linear-gradient(45deg, #28a745, #20c997);
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: #667eea;
+        }
+        
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .results {
+            margin-top: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
+            display: none;
+        }
+        
+        .results.success {
+            border-color: #28a745;
+            background: #f8fff9;
+        }
+        
+        .results.error {
+            border-color: #dc3545;
+            background: #fff5f5;
+        }
+        
+        .job-card {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        
+        .job-card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .job-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .job-company {
+            color: #667eea;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        .job-location {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        
+        .relevance-score {
+            display: inline-block;
+            background: #28a745;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .match-reasons {
+            margin-top: 10px;
+        }
+        
+        .match-reason {
+            display: inline-block;
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-success {
+            background: #28a745;
+        }
+        
+        .status-warning {
+            background: #ffc107;
+        }
+        
+        .status-error {
+            background: #dc3545;
+        }
+        
+        pre {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Job Recommendation Test</h1>
+            <p>Test the on-demand job recommendation system with Apify & Gemini AI</p>
+        </div>
+        
+        <div class="content">
+            <!-- System Status -->
+            <div class="test-section">
+                <h3>System Status</h3>
+                <div id="systemStatus">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        Loading system status...
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Quick Test -->
+            <div class="test-section">
+                <h3>Quick Test</h3>
+                <p style="margin-bottom: 20px; color: #6c757d;">Test with basic parameters (fastest option)</p>
+                
+                <div class="form-group">
+                    <label>Desired Role:</label>
+                    <input type="text" id="quickRole" value="Software Engineer" placeholder="e.g., Software Engineer, Data Scientist">
+                </div>
+                
+                <div class="form-group">
+                    <label>Experience Level:</label>
+                    <select id="quickExperience">
+                        <option value="entry">Entry Level (0-2 years)</option>
+                        <option value="junior">Junior (2-4 years)</option>
+                        <option value="mid" selected>Mid Level (4-7 years)</option>
+                        <option value="senior">Senior (7-10 years)</option>
+                        <option value="lead">Lead (10-15 years)</option>
+                        <option value="executive">Executive (15+ years)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Skills (comma separated):</label>
+                    <input type="text" id="quickSkills" value="JavaScript, React, Node.js" placeholder="e.g., JavaScript, Python, AWS">
+                </div>
+                
+                <button class="btn" onclick="runQuickTest()">🚀 Quick Test</button>
+                <button class="btn btn-secondary" onclick="clearResults()">Clear Results</button>
+            </div>
+            
+            <!-- Sample Resume Test -->
+            <div class="test-section">
+                <h3>Sample Resume Test</h3>
+                <p style="margin-bottom: 20px; color: #6c757d;">Test with built-in sample resume (Software Engineer profile)</p>
+                
+                <div class="form-group">
+                    <label>Override Desired Role (optional):</label>
+                    <input type="text" id="sampleRole" placeholder="Leave empty to use resume role">
+                </div>
+                
+                <button class="btn" onclick="runSampleTest()">📄 Test with Sample Resume</button>
+            </div>
+            
+            <!-- File Upload Test -->
+            <div class="test-section">
+                <h3>Upload Resume Test</h3>
+                <p style="margin-bottom: 20px; color: #6c757d;">Upload your own resume file (PDF, DOCX, DOC, TXT)</p>
+                
+                <div class="form-group">
+                    <label>Resume File:</label>
+                    <div class="file-input-wrapper">
+                        <input type="file" id="resumeFile" accept=".pdf,.doc,.docx,.txt">
+                        <label for="resumeFile" class="file-input-label">
+                            📎 Click to select resume file (PDF, DOC, DOCX, TXT)
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Desired Role (optional):</label>
+                    <input type="text" id="uploadRole" placeholder="e.g., Data Scientist">
+                </div>
+                
+                <button class="btn" onclick="runUploadTest()">📤 Test with Uploaded Resume</button>
+            </div>
+            
+            <!-- Loading Indicator -->
+            <div class="loading" id="loadingIndicator">
+                <div class="spinner"></div>
+                <div id="loadingText">Processing your request...</div>
+            </div>
+            
+            <!-- Results Section -->
+            <div class="results" id="results">
+                <h3>Results</h3>
+                <div id="resultsContent"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const API_BASE = 'http://localhost:5000/api/test-recommendations';
+        
+        // Load system status on page load
+        window.onload = function() {
+            loadSystemStatus();
+            setupFileInput();
+        };
+        
+        function setupFileInput() {
+            const fileInput = document.getElementById('resumeFile');
+            const label = document.querySelector('.file-input-label');
+            
+            fileInput.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    label.textContent = `📎 ${this.files[0].name}`;
+                } else {
+                    label.textContent = '📎 Click to select resume file (PDF, DOC, DOCX, TXT)';
+                }
+            });
+        }
+        
+        async function loadSystemStatus() {
+            try {
+                const response = await fetch(`${API_BASE}/`);
+                const data = await response.json();
+                
+                const statusDiv = document.getElementById('systemStatus');
+                
+                if (data.success) {
+                    statusDiv.innerHTML = `
+                        <div style="margin-bottom: 15px;">
+                            <span class="status-indicator ${data.config.geminiConfigured ? 'status-success' : 'status-error'}"></span>
+                            <strong>Gemini AI:</strong> ${data.config.geminiConfigured ? 'Configured ✅' : 'Not configured ❌'}
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <span class="status-indicator ${data.config.apifyConfigured ? 'status-success' : 'status-error'}"></span>
+                            <strong>Apify API:</strong> ${data.config.apifyConfigured ? 'Configured ✅' : 'Not configured ❌'}
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <strong>Supported Files:</strong> ${data.config.supportedFileTypes.join(', ')}
+                        </div>
+                        <div>
+                            <strong>Max File Size:</strong> ${data.config.maxFileSize}
+                        </div>
+                    `;
+                } else {
+                    statusDiv.innerHTML = `<div style="color: #dc3545;">❌ Failed to load system status</div>`;
+                }
+            } catch (error) {
+                document.getElementById('systemStatus').innerHTML = `<div style="color: #dc3545;">❌ Error loading status: ${error.message}</div>`;
+            }
+        }
+        
+        function showLoading(text = 'Processing your request...') {
+            document.getElementById('loadingIndicator').style.display = 'block';
+            document.getElementById('loadingText').textContent = text;
+            document.getElementById('results').style.display = 'none';
+        }
+        
+        function hideLoading() {
+            document.getElementById('loadingIndicator').style.display = 'none';
+        }
+        
+        function showResults(data, isError = false) {
+            hideLoading();
+            const results = document.getElementById('results');
+            const resultsContent = document.getElementById('resultsContent');
+            
+            results.className = `results ${isError ? 'error' : 'success'}`;
+            results.style.display = 'block';
+            
+            if (isError) {
+                resultsContent.innerHTML = `
+                    <h4 style="color: #dc3545;">❌ Error</h4>
+                    <p>${data.message || data.error || 'Unknown error occurred'}</p>
+                `;
+            } else {
+                resultsContent.innerHTML = formatResults(data);
+            }
+        }
+        
+        function formatResults(data) {
+            let html = `<h4 style="color: #28a745;">✅ Success</h4>`;
+            
+            if (data.data && data.data.analysis) {
+                const analysis = data.data.analysis;
+                html += `
+                    <div style="margin-bottom: 25px;">
+                        <h5>📊 Resume Analysis</h5>
+                        <div style="background: white; padding: 15px; border-radius: 5px; margin: 10px 0;">
+                            <p><strong>Role:</strong> ${analysis.extractedRole}</p>
+                            <p><strong>Experience:</strong> ${analysis.experienceLevel} (${analysis.experienceYears} years)</p>
+                            <p><strong>Skills:</strong> ${analysis.skills.join(', ')}</p>
+                            <p><strong>Industry:</strong> ${analysis.industry}</p>
+                            <p><strong>Location:</strong> ${analysis.location}</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            if (data.data && data.data.recommendations && data.data.recommendations.jobs) {
+                const jobs = data.data.recommendations.jobs;
+                const avgScore = data.data.recommendations.averageRelevanceScore;
+                
+                html += `
+                    <div style="margin-bottom: 25px;">
+                        <h5>🎯 Job Recommendations (${jobs.length} found, Avg: ${avgScore}% match)</h5>
+                        <div style="max-height: 500px; overflow-y: auto;">
+                `;
+                
+                jobs.forEach(job => {
+                    html += `
+                        <div class="job-card">
+                            <div class="job-title">${job.title}</div>
+                            <div class="job-company">${job.company}</div>
+                            <div class="job-location">${job.location}</div>
+                            <div style="margin: 10px 0;">
+                                <span class="relevance-score">${job.relevanceScore || 0}% Match</span>
+                                <span style="margin-left: 10px; font-size: 0.9rem; color: #6c757d;">
+                                    ${job.workMode} • ${job.jobType}
+                                </span>
+                            </div>
+                            ${job.matchReasons && job.matchReasons.length > 0 ? `
+                                <div class="match-reasons">
+                                    ${job.matchReasons.map(reason => `<span class="match-reason">${reason}</span>`).join('')}
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                });
+                
+                html += `</div></div>`;
+            }
+            
+            // Processing info
+            if (data.data && data.data.processingTimeSeconds) {
+                html += `
+                    <div style="margin-top: 20px; font-size: 0.9rem; color: #6c757d;">
+                        <strong>Processing Time:</strong> ${data.data.processingTimeSeconds} seconds
+                    </div>
+                `;
+            }
+            
+            return html;
+        }
+        
+        async function runQuickTest() {
+            const role = document.getElementById('quickRole').value;
+            const experience = document.getElementById('quickExperience').value;
+            const skills = document.getElementById('quickSkills').value;
+            
+            if (!role) {
+                alert('Please enter a desired role');
+                return;
+            }
+            
+            showLoading('Running quick test...');
+            
+            try {
+                const response = await fetch(`${API_BASE}/quick`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ role, experience, skills })
+                });
+                
+                const data = await response.json();
+                showResults(data, !response.ok);
+            } catch (error) {
+                showResults({ error: error.message }, true);
+            }
+        }
+        
+        async function runSampleTest() {
+            const desiredRole = document.getElementById('sampleRole').value;
+            
+            showLoading('Testing with sample resume...');
+            
+            try {
+                const response = await fetch(`${API_BASE}/sample`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ desiredRole })
+                });
+                
+                const data = await response.json();
+                showResults(data, !response.ok);
+            } catch (error) {
+                showResults({ error: error.message }, true);
+            }
+        }
+        
+        async function runUploadTest() {
+            const fileInput = document.getElementById('resumeFile');
+            const desiredRole = document.getElementById('uploadRole').value;
+            
+            if (!fileInput.files || fileInput.files.length === 0) {
+                alert('Please select a resume file');
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            const formData = new FormData();
+            formData.append('resume', file);
+            if (desiredRole) {
+                formData.append('desiredRole', desiredRole);
+            }
+            
+            showLoading(`Processing uploaded file: ${file.name}...`);
+            
+            try {
+                const response = await fetch(`${API_BASE}/upload`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                showResults(data, !response.ok);
+            } catch (error) {
+                showResults({ error: error.message }, true);
+            }
+        }
+        
+        function clearResults() {
+            document.getElementById('results').style.display = 'none';
+            hideLoading();
+        }
+    </script>
+</body>
+</html>

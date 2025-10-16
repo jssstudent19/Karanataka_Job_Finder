@@ -1,0 +1,68 @@
+John Doe
+Software Engineer
+Email: john.doe@email.com
+Phone: +91-9876543210
+Location: Bangalore, Karnataka, India
+
+SUMMARY
+Experienced Software Engineer with 5 years of expertise in full-stack development, specializing in React, Node.js, and cloud technologies. Proven track record of delivering scalable applications and leading technical teams.
+
+SKILLS
+• Programming Languages: JavaScript, TypeScript, Python, Java
+• Frontend: React, Angular, Vue.js, HTML5, CSS3, Bootstrap
+• Backend: Node.js, Express.js, FastAPI, Spring Boot
+• Databases: MongoDB, MySQL, PostgreSQL, Redis
+• Cloud: AWS, Azure, Docker, Kubernetes
+• Tools: Git, Jenkins, JIRA, Slack
+
+EXPERIENCE
+
+Senior Software Engineer | TechCorp Solutions | Bangalore, KA | Jan 2022 - Present
+• Led a team of 5 developers to build a microservices-based e-commerce platform
+• Improved application performance by 40% through code optimization and caching strategies
+• Implemented CI/CD pipelines reducing deployment time by 60%
+• Mentored junior developers and conducted code reviews
+
+Software Engineer | WebDev Inc | Bangalore, KA | Jun 2019 - Dec 2021
+• Developed responsive web applications using React and Node.js
+• Collaborated with cross-functional teams to deliver 15+ projects on time
+• Reduced bug reports by 30% through comprehensive testing strategies
+• Participated in agile development processes and sprint planning
+
+EDUCATION
+
+Master of Computer Applications | Bangalore University | 2017-2019
+• CGPA: 8.7/10
+• Relevant Coursework: Data Structures, Algorithms, Software Engineering, Database Management
+
+Bachelor of Computer Applications | Karnataka State University | 2014-2017
+• Percentage: 85%
+• Relevant Coursework: Programming in C, Java, Web Technologies
+
+PROJECTS
+
+E-Commerce Platform (2022)
+• Built a full-stack e-commerce application with React frontend and Node.js backend
+• Integrated payment gateways (Stripe, Razorpay) and implemented secure authentication
+• Technologies: React, Node.js, MongoDB, AWS S3, Docker
+
+Task Management System (2021)
+• Developed a collaborative task management tool for remote teams
+• Implemented real-time updates using WebSocket and Redux for state management
+• Technologies: React, Express.js, Socket.io, PostgreSQL
+
+CERTIFICATIONS
+
+AWS Certified Solutions Architect | Amazon Web Services | 2022
+MongoDB Certified Developer | MongoDB Inc. | 2021
+React Developer Certification | Meta | 2020
+
+ACHIEVEMENTS
+• Winner of TechCorp Hackathon 2022
+• Published article on "Microservices Best Practices" in TechMedium
+• Volunteer mentor at local coding bootcamp
+
+LANGUAGES
+• English - Fluent
+• Hindi - Native
+• Kannada - Native
